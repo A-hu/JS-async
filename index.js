@@ -6,7 +6,22 @@ PromisegetUser(1)
   .then(user => PromisegetRepositories(user.gitHubUsername))
   .then(repos => PromisegetCommits(repos[0]))
   .then(commits => console.log('Commits: ', commits))
-  .catch(err => console.lgo('Error', err.message));
+  .catch(err => console.log('Error', err.message));
+
+// Async/await
+async function displayCommits() {
+  try {
+    const user = await PromisegetUser(1)
+    const repos = await PromisegetRepositories(user.gitHubUsername)
+    const commits = await PromisegetCommits(repos[0]);
+    console.log(commits);
+  }
+  catch (err) {
+    console.log('Error', err.message);
+  }
+}
+
+displayCommits()
 
 console.log('After');
 
@@ -53,6 +68,7 @@ function PromisegetRepositories(username) {
     setTimeout(() => {
       console.log(`Calling ${username} repositories`);
       resolve(['repo1', 'repo2', 'repo3']);
+      // reject(new Error('Could not access the repo'));
     }, 2000);
   });
 }
@@ -65,4 +81,4 @@ function PromisegetCommits(repo) {
     }, 2000);
   });
 }
-// Async/await
+
