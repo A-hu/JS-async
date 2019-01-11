@@ -1,12 +1,6 @@
 console.log('Before');
 // Callbacks
-getUser(1, (user) => {
-  console.log('User', user);
-
-  getRepositories(user.gitHubUsername, (repos) => {
-    console.log('Repos', repos);
-  });
-});
+getUser(1, getRepositories);
 console.log('After');
 
 // Promises
@@ -24,4 +18,16 @@ function getRepositories(username, callback) {
     console.log(`Calling ${username} repositories`);
     callback(['repo1', 'repo2', 'repo3']);
   }, 2000);
+}
+
+function getRepositories(user) {
+  getRepositories(user.gitHubUsername, getCommits);
+}
+
+function getCommits(repos) {
+  getCommits(user.gitHubUsername, displayCommits);
+}
+
+function displayCommits(commits) {
+  console.log(commits);
 }
